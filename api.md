@@ -1,6 +1,6 @@
 # DreamGen API
 
-我们为我们的 Opus V1+ 模型提供了 API。该 API 可供 [部分高级订阅计划](https://dreamgen.com/pricing) 使用。请注意，DreamGen API 严禁用于共享，仅限个人使用。
+我们为我们的 Opus V1+ 模型提供 API。该 API 可用于 [部分高级订阅计划](https://dreamgen.com/pricing)。请注意，DreamGen API 严禁用于共享， strictly 仅限个人使用。
 
 您可以通过任何语言的 HTTP 请求与 API 进行交互。一些 API 也与 OpenAI 的客户端库兼容。
 
@@ -15,7 +15,7 @@ Authorization: Bearer YOUR_DREAMGEN_API_KEY
 
 ```
 
-**请保持您的 API 密钥的机密性。** 不要与他人分享，也不要公开暴露。
+**请保密您的 API 密钥。** 不要与他人分享，也不要公开暴露。
 
 ## Chat API
 
@@ -55,20 +55,29 @@ type SamplingParams = {
   stopSequences?: string[];
 
   // 如果设置为 true，模型将不会生成 EOS 令牌。
-  // 生成将不会停止，直到发生以下情况之一：
-  // - 达到 `maxTokens` 限制；或者
-  // - 遇到 `stop` 序列；或者
+  // 生成将不会停止，直到满足以下条件之一：
+  // - 达到 `maxTokens` 限制；或
+  // - 遇到 `stop` 序列；或
   // - 满足其他停止条件
   ignoreEos?: boolean;
 
-  // 仅限 Opus V1+。
-  // 模型被允许生成的角色集合，例如
+  // 仅适用于 Opus V1+。
+  // 模型允许生成的角色集，例如
   // ["text", "user"]。
   allowedRoles?: string[];
 
-  // 仅限 Opus V1+。
+  // 仅适用于 Opus V1+。
   // 如果设置为 true，模型将不会生成
-  // EOM 令牌 (`
+  // EOM 令牌 (`<!im_end|>`).
+  disallowMessageEnd?: boolean;
+
+  // 仅适用于 Opus V1+。
+  // 如果设置为 true，模型将不会生成
+  // EOM 令牌 (`<!im_end|>`)，直到消息
+  // 至少有 `minimumMessageContentTokens` 个令牌。
+  minimumMessageContentTokens?: number;
+};
+```
 
 ### 响应
 
@@ -81,7 +90,7 @@ type CompletionOkResponse = {
   success: true,
 
   // 生成的输出。
-  // 根据请求参数，可能是完整输出或增量输出。
+  // 根据请求参数，可以是完整输出或增量输出。
   output: string,
 
   // 生成停止的原因。
@@ -89,7 +98,7 @@ type CompletionOkResponse = {
   // - stop: 达到 stopSequences
   finishReason?: 'length' | 'stop' | undefined,
 
-  // 使用的 token 和积分数量。
+  // 使用的令牌和积分数量。
   usage: CompletionUsage
 };
 
@@ -108,11 +117,11 @@ type CompletionUsageSchema = {
 
 ## OpenAI 兼容的 API
 
-我们提供几个 OpenAI 兼容的 API，具体如下：
+我们提供多个 OpenAI 兼容的 API，包括：
 
-- Chat API: `POST https://dreamgen.com/api/openai/v1/chat/completions`
-- Text API: `POST https://dreamgen.com/api/openai/v1/completions`
-- Models API: `POST https://dreamgen.com/api/openai/v1/models`
+- 聊天 API: `POST https://dreamgen.com/api/openai/v1/chat/completions`
+- 文本 API: `POST https://dreamgen.com/api/openai/v1/completions`
+- 模型 API: `POST https://dreamgen.com/api/openai/v1/models`
 
 ## OpenAI 聊天完成
 
@@ -120,7 +129,7 @@ type CompletionUsageSchema = {
 
 `POST https://dreamgen.com/api/openai/v1/chat/completions`
 
-这是一个与 OpenAI 的流式 [聊天完成规范](https://platform.openai.com/docs/api-reference/chat) 兼容的原生聊天 API 版本。
+这是与 OpenAI 的流式 [聊天完成规范](https://platform.openai.com/docs/api-reference/chat) 兼容的原生聊天 API 版本。
 
 请查看这个 [Python Colab](https://colab.research.google.com/drive/1QBORGyG3BdVlXH3gBmUHtE3m9-u9GTNG?usp=sharing)，了解如何使用官方的 OpenAI Python 客户端库。
 
@@ -148,22 +157,22 @@ type ModelSpec = {
 };
 ```
 
-`assistant` 和 `user` 的规格决定了 OpenAI 的 `assistant` 和 `user` 角色如何转换为 Opus 角色。
+`assistant` 和 `user` 规格决定了 OpenAI 的 `assistant` 和 `user` 角色如何转换为 Opus 角色。
 
 您还可以使用以下简写：
 
-- `opus-v1-{size}/text`：代表 `{"assistant": {"role": "text", "open": true}}`
-- `opus-v1-{size}/assistant`：代表 `{"assistant": {"role": "assistant", "open": false}}`
+- `opus-v1-{size}/text`：表示 `{"assistant": {"role": "text", "open": true}}`
+- `opus-v1-{size}/assistant`：表示 `{"assistant": {"role": "assistant", "open": false}}`
 
-### 额外请求参数：
+### 附加请求参数：
 
-这些是 DreamGen 的 OpenAI API 支持的额外参数：
+这些是 DreamGen 的 OpenAI API 支持的附加参数：
 
 - `min_p`
 - `top_k`
 - `repetition_penalty`
 
-在使用 OpenAI 的 Python SDK 时，可以通过 `extra_body` 参数传递这些参数：
+使用 OpenAI 的 Python SDK 时，可以通过 `extra_body` 参数传递这些参数：
 
 ```
 completion = client.chat.completions.create(
@@ -181,7 +190,7 @@ completion = client.chat.completions.create(
 )
 ```
 
-### 不支持（被忽略）请求参数：
+### 不支持（被忽略）的请求参数：
 
 - `logit_bias`
 - `logprobs`
@@ -196,35 +205,35 @@ completion = client.chat.completions.create(
 - `function_call`
 - `functions`
 
-## OpenAI文本补全
+## OpenAI 文本补全
 
-注意：这是一个无状态的API，提示内容不会被记录或存储。
+注意：这是一个无状态的 API，提示内容不会被记录或存储。
 
 `POST https://dreamgen.com/api/openai/v1/completions`
 
-这是与OpenAI的流式[文本补全规范](https://platform.openai.com/docs/api-reference/completions)兼容的原生文本API版本。
+这是与 OpenAI 的流式 [文本补全规范](https://platform.openai.com/docs/api-reference/completions) 兼容的原生文本 API 版本。
 
-请查看这个[Python Colab](https://colab.research.google.com/drive/1QBORGyG3BdVlXH3gBmUHtE3m9-u9GTNG?usp=sharing)，了解如何使用官方OpenAI Python客户端库。
+请查看这个 [Python Colab](https://colab.research.google.com/drive/1QBORGyG3BdVlXH3gBmUHtE3m9-u9GTNG?usp=sharing)，了解如何使用官方的 OpenAI Python 客户端库。
 
-文本`prompt`应遵循[Opus V1模型指南](/models/v1.md)中描述的ChatML+Text提示格式。
+文本 `prompt` 应遵循 [Opus V1 模型指南](/models/v1.md) 中描述的 ChatML+Text 提示格式。
 
-`model`可以是：
+`model` 可以是以下之一：
 
 - `opus-v1-{size}`
-- `opus-v1-{size}/text` \-\- 模型仅允许使用`text`角色
-- `opus-v1-{size}/assistant` \-\- 模型仅允许使用`assistant`角色
+- `opus-v1-{size}/text` \-\- 模型仅允许使用 `text` 角色
+- `opus-v1-{size}/assistant` \-\- 模型仅允许使用 `assistant` 角色
 
-其中`{size}`可以是`sm`、`lg`或`xl`。
+其中 `{size}` 可以是 `sm`、`lg` 或 `xl`。
 
-### 附加请求参数：
+### 额外请求参数：
 
-这些是 DreamGen 的 OpenAI API 支持的附加参数：
+这些是 DreamGen 的 OpenAI API 支持的额外参数：
 
 - `min_p`
 - `top_k`
 - `repetition_penalty`
 
-使用 OpenAI 的 Python SDK 时，可以通过 `extra_body` 参数传递这些参数：
+在使用 OpenAI 的 Python SDK 时，可以通过 `extra_body` 参数传递这些参数：
 
 ```
 completion = client.completions.create(
@@ -242,7 +251,7 @@ completion = client.completions.create(
 )
 ```
 
-### 不支持（忽略）请求参数：
+### 不支持（被忽略）的请求参数：
 
 - `best_of`
 - `echo`
