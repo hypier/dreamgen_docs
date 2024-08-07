@@ -68,12 +68,12 @@ type SamplingParams = {
 
   // 仅适用于 Opus V1+。
   // 如果设置为 true，模型将不会生成
-  // EOM 令牌 (`<!im_end|>`).
+  // EOM 令牌 (`<|im_end|>`).
   disallowMessageEnd?: boolean;
 
   // 仅适用于 Opus V1+。
   // 如果设置为 true，模型将不会生成
-  // EOM 令牌 (`<!im_end|>`)，直到消息
+  // EOM 令牌 (`<|im_end|>`)，直到消息
   // 至少有 `minimumMessageContentTokens` 个令牌。
   minimumMessageContentTokens?: number;
 };
