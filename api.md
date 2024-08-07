@@ -27,7 +27,7 @@ Authorization: Bearer YOUR_DREAMGEN_API_KEY
 
 ### 请求
 
-```
+```typescript
 type CompletionRequest = {
   modelId: 'opus-v1-sm' | 'opus-v1-lg' | 'opus-v1-xl';
   input: string;
@@ -83,7 +83,7 @@ type SamplingParams = {
 
 响应以 JSON-lines 格式流式传输，每行包含一个类型为 `CompletionResponse` 的 JSON 对象，如下所定义。
 
-```
+```typescript
 type CompletionResponse = CompletionOkResponse | CompletionErrResponse;
 
 type CompletionOkResponse = {
@@ -143,7 +143,7 @@ type CompletionUsageSchema = {
 
 其中 `{size}` 可以是 `sm` 或 `lg`，而 `{MODEL_SPEC}` 可以是 `text`、`assistant` 或具有以下模式的 JSON：
 
-```
+```typescript
 type ModelSpec = {
   assistant: {
     role: 'assistant' | 'text';
@@ -174,7 +174,7 @@ type ModelSpec = {
 
 使用 OpenAI 的 Python SDK 时，可以通过 `extra_body` 参数传递这些参数：
 
-```
+```typescript
 completion = client.chat.completions.create(
   model="opus-v1-lg/text",
   stream=True,
@@ -235,7 +235,7 @@ completion = client.chat.completions.create(
 
 在使用 OpenAI 的 Python SDK 时，可以通过 `extra_body` 参数传递这些参数：
 
-```
+```typescript
 completion = client.completions.create(
   model="opus-v1-sm/text",
   stream=True,
