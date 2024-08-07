@@ -1,4 +1,4 @@
-# DreamGen 文档
+# DreamGen 中文文档
 
 本文档描述了 DreamGen 的内部工作原理，以及如何充分利用它。
 
