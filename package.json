@@ -1,0 +1,11 @@
+{
+  "name": "dreamgen-docs-cn",
+  "version": "1.0.0",
+  "description": "Documentation built with Retype",
+  "scripts": {
+    "build": "retype build"
+  },
+  "dependencies": {
+    "retypeapp": "^3.5.0"
+  }
+}
