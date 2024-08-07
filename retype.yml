@@ -1,0 +1,16 @@
+input: .
+output: .retype
+url: dg-docs.role.fun
+meta:
+  title: " | DreamGen 中文文档"
+branding:
+  title: DreamGen 中文文档
+  label: Docs
+edit:
+  repo: "https://github.com/hypier/dreamgen_docs/edit"
+links:
+- text: Github
+  link: https://github.com/hypier/dreamgen_docs
+footer:
+  copyright: "&copy; Copyright {{ year }}. All rights reserved."
+
